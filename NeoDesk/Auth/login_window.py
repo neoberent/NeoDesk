@@ -46,13 +46,11 @@ class LoginWindow(PasswordRulesMixin, BaseWindow):
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(0, weight=1)
 
-        # ── Background canvas with subtle grid lines ──────────────────────────
         bg = ctk.CTkFrame(self, fg_color=BG)
         bg.grid(row=0, column=0, sticky="nsew")
         bg.grid_columnconfigure(0, weight=1)
         bg.grid_rowconfigure(0, weight=1)
 
-        # ── Centered glass panel ──────────────────────────────────────────────
         self.panel = ctk.CTkFrame(
             bg,
             corner_radius=20,
