@@ -1,4 +1,3 @@
-# Dashboard/dashboard_window.py
 import customtkinter as ctk
 import tkinter.messagebox as mbox
 
@@ -25,7 +24,6 @@ except Exception:
     AdminWindow = None
 
 
-# ── Module card data ──────────────────────────────────────────────────────────
 _MODULES = [
     {
         "key": "chat",
@@ -65,7 +63,6 @@ class _ModuleCard(ctk.CTkFrame):
         )
         self.grid_columnconfigure(0, weight=1)
 
-        # Icon circle
         icon_bg = ctk.CTkFrame(self, width=52, height=52,
                                corner_radius=14, fg_color=SURFACE)
         icon_bg.grid(row=0, column=0, sticky="w", padx=22, pady=(22, 10))
@@ -73,28 +70,23 @@ class _ModuleCard(ctk.CTkFrame):
         ctk.CTkLabel(icon_bg, text=data["icon"],
                      font=ctk.CTkFont(size=24)).place(relx=0.5, rely=0.5, anchor="center")
 
-        # Title
         ctk.CTkLabel(self, text=data["title"],
                      font=font_h2(), text_color=TEXT,
                      anchor="w").grid(row=1, column=0, sticky="ew", padx=22, pady=(0, 4))
 
-        # Subtitle
         ctk.CTkLabel(self, text=data["subtitle"],
                      font=font_small(), text_color=SUBTLE,
                      anchor="w", wraplength=220).grid(
             row=2, column=0, sticky="ew", padx=22, pady=(0, 18))
 
-        # Separator
         ctk.CTkFrame(self, height=1, fg_color=BORDER, corner_radius=0).grid(
             row=3, column=0, sticky="ew")
 
-        # Action button row
         btn_row = ctk.CTkFrame(self, fg_color="transparent")
         btn_row.grid(row=4, column=0, sticky="ew", padx=22, pady=14)
         PrimaryButton(btn_row, text=data["action_label"], command=command,
                       height=34).pack(side="left")
 
-        # Hover effect
         self.bind("<Enter>", lambda e: self.configure(border_color=ACCENT))
         self.bind("<Leave>", lambda e: self.configure(border_color=BORDER))
 
@@ -114,14 +106,12 @@ class DashboardWindow(ctk.CTkToplevel):
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(1, weight=1)
 
-        # ── Top navigation bar ────────────────────────────────────────────────
         navbar = ctk.CTkFrame(self, fg_color=PANEL,
                               border_width=0, corner_radius=0, height=60)
         navbar.grid(row=0, column=0, sticky="ew")
         navbar.grid_propagate(False)
         navbar.grid_columnconfigure(1, weight=1)
 
-        # Brand
         brand = ctk.CTkFrame(navbar, fg_color="transparent")
         brand.grid(row=0, column=0, sticky="w", padx=28, pady=0)
         brand.grid_rowconfigure(0, weight=1)
@@ -132,30 +122,25 @@ class DashboardWindow(ctk.CTkToplevel):
         ctk.CTkLabel(brand, text="  NEO", font=font_h2(),
                      text_color=TEXT).grid(row=0, column=1)
 
-        # Welcome
         ctk.CTkLabel(navbar, text=f"Willkommen, {self.username}",
                      font=font_body(), text_color=SUBTLE).grid(
             row=0, column=1, sticky="e", padx=28)
 
-        # ── Body ──────────────────────────────────────────────────────────────
         body = ctk.CTkFrame(self, fg_color=BG)
         body.grid(row=1, column=0, sticky="nsew")
         body.grid_columnconfigure((0, 1, 2), weight=1)
         body.grid_rowconfigure(1, weight=1)
 
-        # Section heading
         ctk.CTkLabel(body, text="Module", font=font_h1(),
                      text_color=TEXT, anchor="w").grid(
             row=0, column=0, columnspan=3, sticky="w", padx=32, pady=(28, 16))
 
-        # Cards
         visible_modules = _MODULES if is_admin else [m for m in _MODULES if m["key"] != "admin"]
         actions_map = {"chat": self.open_chat, "notes": self.open_notes, "admin": self.open_admin}
         for i, mod in enumerate(visible_modules):
             card = _ModuleCard(body, mod, actions_map[mod["key"]])
             card.grid(row=1, column=i, sticky="nsew", padx=16, pady=(0, 28))
 
-        # ── Status bar ────────────────────────────────────────────────────────
         statusbar = ctk.CTkFrame(self, fg_color=PANEL,
                                  border_width=0, corner_radius=0, height=30)
         statusbar.grid(row=2, column=0, sticky="ew")
@@ -163,7 +148,6 @@ class DashboardWindow(ctk.CTkToplevel):
         ctk.CTkLabel(statusbar, text="Neo Workspace  ·  Alle Systeme bereit",
                      font=font_small(), text_color=SUBTLE).place(x=28, rely=0.5, anchor="w")
 
-    # ── open helpers ──────────────────────────────────────────────────────────
 
     def open_chat(self):
         if ChatWindow is None:

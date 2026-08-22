@@ -1,19 +1,17 @@
-# Chatpage_Gui/design.py
 import customtkinter as ctk
 
-# ── Colour Palette ──────────────────────────────────────────────────────────────
-BG        = "#0A0A0F"   # near-black background
-PANEL     = "#12121A"   # card / panel fill
-SURFACE   = "#1A1A26"   # elevated surface
-BORDER    = "#2A2A3D"   # subtle separator
-ACCENT    = "#6C63FF"   # primary violet accent
-ACCENT_H  = "#5A52E0"   # accent hover
-TEXT      = "#F0F0FF"   # primary text
-SUBTLE    = "#8888AA"   # secondary / muted text
+# Core dark-theme palette; ACCENT/DANGER pairs are the base color and its hover shade.
+BG        = "#0A0A0F"
+PANEL     = "#12121A"
+SURFACE   = "#1A1A26"
+BORDER    = "#2A2A3D"
+ACCENT    = "#6C63FF"
+ACCENT_H  = "#5A52E0"
+TEXT      = "#F0F0FF"
+SUBTLE    = "#8888AA"
 DANGER    = "#EF4444"
 DANGER_H  = "#DC2626"
 
-# ── Typography helpers ──────────────────────────────────────────────────────────
 def font_h1() -> ctk.CTkFont:
     return ctk.CTkFont("Segoe UI Semibold", 22, "bold")
 
@@ -27,7 +25,6 @@ def font_small() -> ctk.CTkFont:
     return ctk.CTkFont("Segoe UI", 11)
 
 
-# ── Reusable widgets ────────────────────────────────────────────────────────────
 
 class Label(ctk.CTkLabel):
     def __init__(self, master, text="", size="body", **kw):

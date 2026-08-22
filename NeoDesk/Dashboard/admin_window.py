@@ -1,4 +1,3 @@
-# Dashboard/admin_window.py
 import customtkinter as ctk
 import tkinter as tk
 import tkinter.messagebox as mbox
@@ -39,7 +38,6 @@ class AdminWindow(BaseToplevel):
         self.grid_rowconfigure(1, weight=1)
         self.grid_columnconfigure(0, weight=1)
 
-        # ── Top bar ───────────────────────────────────────────────────────────
         topbar = ctk.CTkFrame(self, fg_color=PANEL,
                               border_width=0, corner_radius=0, height=60)
         topbar.grid(row=0, column=0, sticky="ew")
@@ -50,7 +48,6 @@ class AdminWindow(BaseToplevel):
                      font=font_h2(), text_color=TEXT).grid(
             row=0, column=0, sticky="w", padx=24, pady=0)
 
-        # Search + add button
         right_bar = ctk.CTkFrame(topbar, fg_color="transparent")
         right_bar.grid(row=0, column=1, sticky="e", padx=20)
         right_bar.grid_columnconfigure(0, weight=1)
@@ -65,14 +62,12 @@ class AdminWindow(BaseToplevel):
         PrimaryButton(right_bar, text="+ Benutzer hinzufügen",
                       command=self._add_user_dialog, height=34).grid(row=0, column=1)
 
-        # ── Scrollable grid area ──────────────────────────────────────────────
         self.scroll = ctk.CTkScrollableFrame(self, fg_color=BG)
         self.scroll.grid(row=1, column=0, sticky="nsew", padx=0, pady=0)
 
         self.grid_frame = ctk.CTkFrame(self.scroll, fg_color="transparent")
         self.grid_frame.grid(row=0, column=0, sticky="nsew", padx=16, pady=16)
 
-        # Context menu
         self._menu = tk.Menu(self, tearoff=0,
                              bg="#1A1A26", fg=TEXT,
                              activebackground=ACCENT, activeforeground=TEXT)
@@ -85,7 +80,6 @@ class AdminWindow(BaseToplevel):
         self._load()
         self._on_resize(None)
 
-    # ── Data I/O ──────────────────────────────────────────────────────────────
 
     def _load(self):
         try:
@@ -117,7 +111,6 @@ class AdminWindow(BaseToplevel):
             mbox.showerror("Fehler", f"Löschen fehlgeschlagen:\n{e}")
             return False
 
-    # ── UI helpers ────────────────────────────────────────────────────────────
 
     def _configure_grid_columns(self, cols: int):
         for i in range(max(1, cols)):
@@ -152,7 +145,6 @@ class AdminWindow(BaseToplevel):
                             fg_color=PANEL, border_width=1, border_color=BORDER)
         card.grid_columnconfigure(0, weight=1)
 
-        # Avatar circle
         avatar = ctk.CTkFrame(card, width=44, height=44,
                               corner_radius=22, fg_color=SURFACE)
         avatar.grid(row=0, column=0, sticky="w", padx=16, pady=(16, 8))
@@ -162,12 +154,10 @@ class AdminWindow(BaseToplevel):
                      font=ctk.CTkFont("Segoe UI Semibold", 14, "bold"),
                      text_color=ACCENT).place(relx=0.5, rely=0.5, anchor="center")
 
-        # Name
         ctk.CTkLabel(card, text=uname,
                      font=font_h2(), text_color=TEXT,
                      anchor="w").grid(row=1, column=0, sticky="ew", padx=16, pady=(0, 2))
 
-        # Role badge
         badge_color = ACCENT if role == "Admin" else SURFACE
         badge = ctk.CTkFrame(card, corner_radius=6,
                              fg_color=badge_color, height=22)
@@ -175,11 +165,9 @@ class AdminWindow(BaseToplevel):
         ctk.CTkLabel(badge, text=f"  {role}  ",
                      font=font_small(), text_color=TEXT).pack()
 
-        # Divider
         ctk.CTkFrame(card, height=1, fg_color=BORDER, corner_radius=0).grid(
             row=3, column=0, sticky="ew")
 
-        # Button row
         btn_row = ctk.CTkFrame(card, fg_color="transparent")
         btn_row.grid(row=4, column=0, sticky="ew", padx=12, pady=12)
         btn_row.grid_columnconfigure((0, 1), weight=1)
@@ -191,11 +179,9 @@ class AdminWindow(BaseToplevel):
                      command=lambda u=uname: self._remove(u)).grid(
             row=0, column=1, padx=(6, 0), sticky="ew")
 
-        # RMB selection
         for w in [card, avatar]:
             w.bind("<Button-3>", lambda e, u=uname: self._set_selected(u))
 
-        # Hover highlight
         card.bind("<Enter>", lambda e: card.configure(border_color=ACCENT))
         card.bind("<Leave>", lambda e: card.configure(border_color=BORDER))
 
@@ -210,7 +196,6 @@ class AdminWindow(BaseToplevel):
         finally:
             self._menu.grab_release()
 
-    # ── Actions ───────────────────────────────────────────────────────────────
 
     def _add_user_dialog(self):
         win = ctk.CTkToplevel(self)
@@ -288,7 +273,6 @@ class AdminWindow(BaseToplevel):
         else:
             mbox.showwarning("Hinweis", f'Benutzer „{username}" nicht gefunden.')
 
-    # ── Layout ────────────────────────────────────────────────────────────────
 
     def _on_resize(self, _event):
         width = self.winfo_width()

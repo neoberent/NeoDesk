@@ -1,4 +1,3 @@
-# Auth/login_window.py
 import customtkinter as ctk
 import tkinter.messagebox as mbox
 import bcrypt
@@ -68,12 +67,10 @@ class LoginWindow(PasswordRulesMixin, BaseWindow):
         self.bind("<Configure>",
                   lambda e: self.panel.place(relx=0.5, rely=0.5, anchor="center"))
 
-        # ── Logo / brand area ─────────────────────────────────────────────────
         brand = ctk.CTkFrame(self.panel, fg_color="transparent")
         brand.grid(row=0, column=0, sticky="ew", padx=32, pady=(32, 4))
         brand.grid_columnconfigure(0, weight=1)
 
-        # Accent dot + name
         dot = ctk.CTkFrame(brand, width=10, height=10,
                            corner_radius=5, fg_color=ACCENT)
         dot.grid(row=0, column=0, sticky="w")
@@ -83,7 +80,6 @@ class LoginWindow(PasswordRulesMixin, BaseWindow):
                      font=font_small(), text_color=SUBTLE).grid(
             row=1, column=0, sticky="w", pady=(2, 0))
 
-        # ── Segmented tab ─────────────────────────────────────────────────────
         self._tabs = ctk.CTkSegmentedButton(
             self.panel,
             values=["Anmelden", "Registrieren"],
@@ -100,7 +96,6 @@ class LoginWindow(PasswordRulesMixin, BaseWindow):
         )
         self._tabs.grid(row=1, column=0, sticky="ew", padx=32, pady=(20, 0))
 
-        # ── Form frames ───────────────────────────────────────────────────────
         self._login_frame    = self._build_login(self.panel)
         self._register_frame = self._build_register(self.panel)
 
@@ -108,7 +103,6 @@ class LoginWindow(PasswordRulesMixin, BaseWindow):
         self._login_frame.tkraise()
         ensure_admin()
 
-    # ── builders ──────────────────────────────────────────────────────────────
 
     def _build_login(self, parent):
         f = ctk.CTkFrame(parent, fg_color="transparent")
@@ -164,12 +158,10 @@ class LoginWindow(PasswordRulesMixin, BaseWindow):
 
         return f
 
-    # ── tab switch ────────────────────────────────────────────────────────────
 
     def _switch_tab(self, value):
         (self._login_frame if value == "Anmelden" else self._register_frame).tkraise()
 
-    # ── actions (logic unchanged) ─────────────────────────────────────────────
 
     def login(self):
         u = self.user.get().strip()

@@ -1,16 +1,13 @@
 
-# config.py
 """Zentrale Konfiguration für UI, Pfade und Dateien."""
 import os
 from log_setup import get_logger
 logger = get_logger(__name__)
 
-# ---------- UI ----------
 WINDOW_WIDTH = 980
 WINDOW_HEIGHT = 640
 WINDOW_MINSIZE = (100, 120)
 
-# ---------- Datei-Pfade ----------
 DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
 try:
     os.makedirs(DATA_DIR, exist_ok=True)
@@ -24,7 +21,6 @@ DB_FILES = {
     "USER": os.path.join(DATA_DIR, "data.json"),
 }
 
-# ---------- Sicherheit ----------
 KEY_FILE = os.path.join(DATA_DIR, "schluessel.key")
 
 

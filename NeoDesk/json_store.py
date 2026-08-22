@@ -1,4 +1,4 @@
-# json_store.py — unified users in app_data.json ({"users": {...}})
+# Unified user store: app_data.json in the form {"users": {...}}
 import json, os, threading
 from typing import Optional, Dict, List, Tuple
 from pathlib import Path
@@ -11,7 +11,6 @@ DATA_DIR.mkdir(parents=True, exist_ok=True)
 NOTES_JSON    = DATA_DIR / "notes.json"
 SETTINGS_JSON = DATA_DIR / "settings.json"
 
-# ---- Where to find app_data.json (adjust if needed) ----
 APP_DATA_JSON_CANDIDATES = [
     Path(__file__).resolve().parent / "app_data.json",
     Path(__file__).resolve().parent.parent / "app_data.json",
@@ -27,7 +26,6 @@ def _atomic_write_text(path: Path, text: str):
     tmp.write_text(text, encoding="utf-8")
     os.replace(tmp, path)
 
-# ========== app_data.json helpers (USERS) ==========
 
 def _find_app_data_json() -> Path:
     for p in APP_DATA_JSON_CANDIDATES:
@@ -62,7 +60,6 @@ def _save_users_json(data: dict, path: Path):
         data["users"] = {}
     _atomic_write_text(path, json.dumps(data, ensure_ascii=False, indent=2))
 
-# ========== settings (optional) ==========
 
 def _ensure_settings():
     if not SETTINGS_JSON.exists():
@@ -81,7 +78,6 @@ def _write_settings(d: dict):
         d = {}
     _atomic_write_text(SETTINGS_JSON, json.dumps(d, ensure_ascii=False, indent=2))
 
-# ========== notes (optional) ==========
 
 def _ensure_notes():
     if not NOTES_JSON.exists():
@@ -98,10 +94,8 @@ def _read_notes() -> dict:
 def _write_notes(d: dict):
     _atomic_write_text(NOTES_JSON, json.dumps(d, ensure_ascii=False, indent=2))
 
-# ========== public API ==========
 
 class JsonStore:
-    # ---- Users in app_data.json ----
     def get_users(self) -> Dict[str, dict]:
         data, _ = _load_users_json()
         return data["users"]
@@ -124,14 +118,12 @@ class JsonStore:
                 return True
             return False
 
-    # ---- Settings (optional) ----
     def get_settings(self) -> dict:
         return _read_settings()
 
     def set_settings(self, data: dict) -> None:
         _write_settings(data)
 
-    # ---- Notes (optional) ----
     def list_all(self, owner: Optional[str] = None) -> List[dict]:
         d = _read_notes()
         notes = d.get("notes", [])

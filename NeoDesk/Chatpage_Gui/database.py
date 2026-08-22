@@ -32,7 +32,6 @@ class Database:
             logger.exception('Unhandled exception')
             pass
 
-    # ---- internals ----
     def _connect(self):
         return sqlite3.connect(self.db_path)
 
@@ -47,7 +46,7 @@ class Database:
 
     def _maybe_migrate_from_json(self):
         if self._messages_count() > 0:
-            return  # already populated
+            return
         json_path = Path(DB_FILES.get("USER", ""))
         if not json_path.exists():
             return
@@ -56,7 +55,6 @@ class Database:
         except Exception:
             logger.exception('Unhandled exception')
             return
-        # Normalize potential shapes
         items = []
         if isinstance(data, list):
             items = data
@@ -87,7 +85,6 @@ class Database:
                 "INSERT INTO messages(username, role, content) VALUES(?,?,?)", rows
             )
 
-    # ---- API ----
     def save_message(self, username: str, message: Dict[str, Any]) -> None:
         """message expects {'role': 'user'|'assistant', 'content': '...'}"""
         role = message.get("role", "user")

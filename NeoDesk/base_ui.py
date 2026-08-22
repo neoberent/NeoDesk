@@ -1,4 +1,3 @@
-# base_ui.py
 import customtkinter as ctk
 from settings import get_theme_mode
 from Chatpage_Gui.utils import init_ctk, apply_theme, center_window

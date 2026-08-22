@@ -1,4 +1,3 @@
-# Chatpage_Gui/chat_window.py
 import customtkinter as ctk
 import tkinter as tk
 from tkinter import messagebox
@@ -45,13 +44,11 @@ class ChatWindow(BaseToplevel):
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(0, weight=1)
 
-        # ── Root layout: sidebar + main ───────────────────────────────────────
         root = ctk.CTkFrame(self, fg_color=BG)
         root.grid(row=0, column=0, sticky="nsew")
         root.grid_columnconfigure(1, weight=1)
         root.grid_rowconfigure(0, weight=1)
 
-        # ── Left sidebar ──────────────────────────────────────────────────────
         sidebar = ctk.CTkFrame(root, fg_color=PANEL,
                                border_width=0, corner_radius=0, width=220)
         sidebar.grid(row=0, column=0, sticky="nsew")
@@ -59,7 +56,6 @@ class ChatWindow(BaseToplevel):
         sidebar.grid_rowconfigure(3, weight=1)
         sidebar.grid_columnconfigure(0, weight=1)
 
-        # Brand
         brand = ctk.CTkFrame(sidebar, fg_color="transparent")
         brand.grid(row=0, column=0, sticky="ew", padx=20, pady=(24, 0))
         dot = ctk.CTkFrame(brand, width=8, height=8,
@@ -71,7 +67,6 @@ class ChatWindow(BaseToplevel):
         ctk.CTkFrame(sidebar, height=1, fg_color=BORDER, corner_radius=0).grid(
             row=1, column=0, sticky="ew", pady=16)
 
-        # User info
         user_frame = ctk.CTkFrame(sidebar, fg_color=SURFACE, corner_radius=10)
         user_frame.grid(row=2, column=0, sticky="ew", padx=16, pady=(0, 16))
         user_frame.grid_columnconfigure(1, weight=1)
@@ -91,19 +86,16 @@ class ChatWindow(BaseToplevel):
                      font=font_small(), text_color=ACCENT).grid(
             row=1, column=1, sticky="w")
 
-        # Spacer + hint
         ctk.CTkLabel(sidebar, text="KI-gestützte Konversation",
                      font=font_small(), text_color=SUBTLE,
                      wraplength=180).grid(
             row=3, column=0, padx=20, pady=0, sticky="n")
 
-        # ── Main chat area ────────────────────────────────────────────────────
         main = ctk.CTkFrame(root, fg_color=BG)
         main.grid(row=0, column=1, sticky="nsew")
         main.grid_rowconfigure(1, weight=1)
         main.grid_columnconfigure(0, weight=1)
 
-        # Header bar
         header = ctk.CTkFrame(main, fg_color=PANEL,
                               corner_radius=0, border_width=0, height=52)
         header.grid(row=0, column=0, sticky="ew")
@@ -111,7 +103,6 @@ class ChatWindow(BaseToplevel):
         ctk.CTkLabel(header, text="Neues Gespräch",
                      font=font_h2(), text_color=TEXT).place(x=24, rely=0.5, anchor="w")
 
-        # Chat display
         self.chat_box = ctk.CTkTextbox(
             main, wrap="word",
             fg_color=BG, text_color=TEXT,
@@ -123,7 +114,6 @@ class ChatWindow(BaseToplevel):
         self.chat_box.grid(row=1, column=0, sticky="nsew", padx=24, pady=16)
         self.chat_box.configure(state="disabled")
 
-        # Input bar
         input_bar = ctk.CTkFrame(main, fg_color=PANEL,
                                  corner_radius=0, border_width=0, height=68)
         input_bar.grid(row=2, column=0, sticky="ew")
@@ -147,7 +137,6 @@ class ChatWindow(BaseToplevel):
         self._load_history()
         self.protocol("WM_DELETE_WINDOW", self.destroy)
 
-    # ── helpers ───────────────────────────────────────────────────────────────
 
     def _append_message(self, author: str, text: str):
         self.chat_box.configure(state="normal")
@@ -159,7 +148,6 @@ class ChatWindow(BaseToplevel):
         finally:
             self.chat_box.configure(state="disabled")
 
-    # ── actions ───────────────────────────────────────────────────────────────
 
     def send(self):
         try:

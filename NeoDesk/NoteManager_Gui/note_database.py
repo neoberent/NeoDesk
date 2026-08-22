@@ -24,7 +24,6 @@ class NotesStore:
         self.notes = []
         self._load()
 
-    # ---------- intern ----------
     def _load(self):
         """Lädt die Notizen aus der Datei, falls vorhanden."""
         if os.path.exists(self.filename):
@@ -54,7 +53,6 @@ class NotesStore:
             logger.exception('Unhandled exception')
             return ""
 
-    # ---------- Owner-scoped helpers ----------
     def enumerate_owner(self, owner: str):
         """
         Gibt (global_index, entschlüsselte Notiz) für alle Notizen des Besitzers zurück.
@@ -80,7 +78,6 @@ class NotesStore:
             return out
         return [dec for _, dec in self.enumerate_owner(owner)]
 
-    # ---------- CRUD ----------
     def add(self, content: str, owner: str):
         """Fügt eine neue Notiz hinzu und speichert sie."""
         enc = self._encrypt(content)

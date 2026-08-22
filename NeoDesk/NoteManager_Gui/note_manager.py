@@ -1,4 +1,3 @@
-# NoteManager_Gui/note_manager.py
 import customtkinter as ctk
 from base_ui import BaseToplevel
 import tkinter as tk
@@ -42,7 +41,6 @@ class NotesWindow(BaseToplevel):
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(1, weight=1)
 
-        # ── Top navigation bar ─────────────────────────────────────────────────
         navbar = ctk.CTkFrame(self, fg_color=PANEL,
                               border_width=0, corner_radius=0, height=56)
         navbar.grid(row=0, column=0, sticky="ew")
@@ -57,21 +55,18 @@ class NotesWindow(BaseToplevel):
         ctk.CTkLabel(brand, text=f"  Notizen – {self.username}",
                      font=font_h2(), text_color=TEXT).grid(row=0, column=1)
 
-        # ── Body: sidebar + editor ─────────────────────────────────────────────
         body = ctk.CTkFrame(self, fg_color=BG)
         body.grid(row=1, column=0, sticky="nsew")
         body.grid_columnconfigure(0, weight=0, minsize=280)
         body.grid_columnconfigure(1, weight=1)
         body.grid_rowconfigure(0, weight=1)
 
-        # ── Left sidebar ───────────────────────────────────────────────────────
         sidebar = ctk.CTkFrame(body, fg_color=PANEL,
                                border_width=0, corner_radius=0)
         sidebar.grid(row=0, column=0, sticky="nsew")
         sidebar.grid_rowconfigure(2, weight=1)
         sidebar.grid_columnconfigure(0, weight=1)
 
-        # Search
         search_wrap = ctk.CTkFrame(sidebar, fg_color="transparent")
         search_wrap.grid(row=0, column=0, sticky="ew", padx=16, pady=(16, 8))
         search_wrap.grid_columnconfigure(0, weight=1)
@@ -87,7 +82,6 @@ class NotesWindow(BaseToplevel):
                                        anchor="w")
         self.lbl_count.grid(row=1, column=0, sticky="ew", padx=20, pady=(0, 8))
 
-        # Note list using CTkScrollableFrame + custom rows
         self._list_frame = ctk.CTkScrollableFrame(
             sidebar, fg_color="transparent",
             scrollbar_button_color=SURFACE,
@@ -96,14 +90,12 @@ class NotesWindow(BaseToplevel):
         self._list_frame.grid(row=2, column=0, sticky="nsew", padx=8, pady=(0, 8))
         self._list_frame.grid_columnconfigure(0, weight=1)
 
-        # New note button at bottom of sidebar
         ctk.CTkFrame(sidebar, height=1, fg_color=BORDER, corner_radius=0).grid(
             row=3, column=0, sticky="ew")
         PrimaryButton(sidebar, text="+ Neue Notiz",
                       command=self._new, height=38).grid(
             row=4, column=0, sticky="ew", padx=16, pady=12)
 
-        # Context menu
         self._menu = tk.Menu(self, tearoff=0,
                              bg=PANEL, fg=TEXT,
                              activebackground=ACCENT, activeforeground=TEXT)
@@ -112,13 +104,11 @@ class NotesWindow(BaseToplevel):
         self._menu.add_command(label="Duplizieren", command=self._duplicate_selected)
         self._menu.add_command(label="Löschen",     command=self._delete)
 
-        # ── Right editor ───────────────────────────────────────────────────────
         right = ctk.CTkFrame(body, fg_color=BG)
         right.grid(row=0, column=1, sticky="nsew")
         right.grid_columnconfigure(0, weight=1)
         right.grid_rowconfigure(2, weight=1)
 
-        # Toolbar
         toolbar = ctk.CTkFrame(right, fg_color=SURFACE,
                                border_width=0, corner_radius=0, height=52)
         toolbar.grid(row=0, column=0, sticky="ew")
@@ -134,7 +124,6 @@ class NotesWindow(BaseToplevel):
         DangerButton(btn_wrap, text="🗑  Löschen",
                      command=self._delete, height=34).grid(row=0, column=1)
 
-        # Title entry
         self.title_var = tk.StringVar()
         self.title_var.trace_add("write", self._on_edit_changed)
         ctk.CTkEntry(right,
@@ -146,7 +135,6 @@ class NotesWindow(BaseToplevel):
                      font=ctk.CTkFont("Segoe UI Semibold", 15, "bold")).grid(
             row=1, column=0, sticky="ew", padx=0, pady=0)
 
-        # Content area
         self.content_box = ctk.CTkTextbox(
             right, wrap="word",
             fg_color=BG, text_color=TEXT,
@@ -159,7 +147,6 @@ class NotesWindow(BaseToplevel):
                                padx=24, pady=(12, 0))
         self.content_box.bind("<<Modified>>", self._on_text_modified)
 
-        # Status bar
         statusbar = ctk.CTkFrame(right, fg_color=PANEL,
                                   corner_radius=0, height=28)
         statusbar.grid(row=3, column=0, sticky="ew")
@@ -172,7 +159,6 @@ class NotesWindow(BaseToplevel):
                                     font=font_small(), text_color=SUBTLE)
         self.lbl_wc.place(relx=1, x=-24, rely=0.5, anchor="e")
 
-        # Keyboard shortcuts
         self.bind("<Control-n>", lambda e: self._new())
         self.bind("<Control-s>", lambda e: self._save())
         self.bind("<Control-f>", lambda e: self._focus_search())
@@ -180,7 +166,6 @@ class NotesWindow(BaseToplevel):
 
         self._refresh_list()
 
-    # ── Sidebar list rendering ─────────────────────────────────────────────────
 
     def _refresh_list(self):
         for w in self._list_frame.winfo_children():
@@ -225,7 +210,6 @@ class NotesWindow(BaseToplevel):
             widget.bind("<Button-1>", select)
             widget.bind("<Button-3>", on_rmb)
 
-        # Hover highlight
         def on_enter(e, r=row, nid=note_id):
             if nid != self.selected_note_id:
                 r.configure(fg_color=BORDER)
@@ -246,7 +230,6 @@ class NotesWindow(BaseToplevel):
         finally:
             self._menu.grab_release()
 
-    # ── Data helpers ───────────────────────────────────────────────────────────
 
     def _on_search_change(self, *_):
         self._debounce(self._refresh_list)
@@ -268,7 +251,6 @@ class NotesWindow(BaseToplevel):
                 clean.append({"id": nid, "combined": combined})
         return clean
 
-    # ── Selection / load ───────────────────────────────────────────────────────
 
     def _open_selected(self):
         if self.selected_note_id is not None:
@@ -290,7 +272,6 @@ class NotesWindow(BaseToplevel):
         self._update_wordcount()
         self._set_status(f"Geladen")
 
-    # ── Edit state ─────────────────────────────────────────────────────────────
 
     def _on_text_modified(self, _evt=None):
         try:
@@ -312,7 +293,6 @@ class NotesWindow(BaseToplevel):
         words = len([w for w in body.split() if w.strip()])
         self.lbl_wc.configure(text=f"{words} Wörter")
 
-    # ── Save / delete / new ────────────────────────────────────────────────────
 
     def _save(self):
         title    = self.title_var.get().strip()
@@ -372,7 +352,6 @@ class NotesWindow(BaseToplevel):
             logger.exception("duplicate_note failed")
         self._refresh_list()
 
-    # ── Utilities ──────────────────────────────────────────────────────────────
 
     def _split_title_body(self, combined: str):
         parts = combined.split("\n", 1)
