@@ -1,9 +1,4 @@
-"""
-Central app logging.
-Usage:
-    from log_setup import get_logger
-    logger = get_logger(__name__)
-"""
+# Central app logging: from log_setup import get_logger
 import logging, logging.handlers
 from pathlib import Path
 

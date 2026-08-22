@@ -78,7 +78,6 @@ class StyledEntry(ctk.CTkEntry):
 
 
 class Card(ctk.CTkFrame):
-    """Elevated card with optional title header."""
     def __init__(self, master, title: str = "", **kw):
         super().__init__(master,
                          corner_radius=14,
@@ -108,7 +107,7 @@ class Card(ctk.CTkFrame):
 
 
 class AppShell(ctk.CTkFrame):
-    """12-column grid shell."""
+    # 12-column grid
     def __init__(self, master, **kw):
         super().__init__(master, fg_color=BG, **kw)
         for c in range(12):

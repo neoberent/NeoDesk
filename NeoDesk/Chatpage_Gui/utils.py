@@ -3,7 +3,7 @@ from log_setup import get_logger
 logger = get_logger(__name__)
 
 def init_ctk():
-    # Nur einmal global setzen – harmlos bei Mehrfachaufruf
+    # Safe to call more than once
     try:
         ctk.set_default_color_theme("blue")
     except Exception:
@@ -32,7 +32,6 @@ def center_window(win, w=980, h=640):
         win.geometry(f"{w}x{h}")
 
 class Grid:
-    """Hilfsfunktionen für Grid-Responsiveness."""
     @staticmethod
     def fill(widget, row=0, col=0, padx=0, pady=0):
         widget.grid(row=row, column=col, sticky="nsew", padx=padx, pady=pady)

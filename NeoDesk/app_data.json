@@ -1,1 +1,8 @@
-{"users": {}}
+{
+  "users": {
+    "admin": {
+      "password": "$2b$12$f5elaE5G/Cg4EQIl8VAwJOWf2KYnp2D1IRiXAJjxkYL89wwNGTGMC",
+      "role": "Admin"
+    }
+  }
+}

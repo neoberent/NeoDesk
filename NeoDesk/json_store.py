@@ -35,10 +35,7 @@ def _find_app_data_json() -> Path:
     return APP_DATA_JSON_CANDIDATES[-1]
 
 def _load_users_json() -> Tuple[dict, Path]:
-    """
-    Ensures structure: {"users": { "<name>": {"password": "...", "role": "..."} }}
-    Returns (data, path).
-    """
+    # Returns (data, path); ensures {"users": {"<name>": {"password": "...", "role": "..."}}}
     p = _find_app_data_json()
     if not p.exists():
         data = {"users": {}}

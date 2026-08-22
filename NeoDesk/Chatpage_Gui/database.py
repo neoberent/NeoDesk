@@ -20,7 +20,6 @@ CREATE INDEX IF NOT EXISTS idx_messages_user ON messages(username);
 """
 
 class Database:
-    """SQLite-backed chat storage. History lives in config.CHAT_DB"""
     def __init__(self, db_path: Optional[str] = None):
         self.db_path = db_path or CHAT_DB
         Path(os.path.dirname(self.db_path)).mkdir(parents=True, exist_ok=True)
@@ -86,7 +85,6 @@ class Database:
             )
 
     def save_message(self, username: str, message: Dict[str, Any]) -> None:
-        """message expects {'role': 'user'|'assistant', 'content': '...'}"""
         role = message.get("role", "user")
         content = message.get("content", "")
         if not content:
@@ -98,7 +96,6 @@ class Database:
             )
 
     def get_messages(self, username: Optional[str] = None) -> List[Dict[str, Any]]:
-        """Return normalized messages, optionally filtered by username (user messages)."""
         with self._connect() as con:
             if username:
                 cur = con.execute(

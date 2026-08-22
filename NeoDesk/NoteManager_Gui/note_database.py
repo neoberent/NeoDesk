@@ -5,15 +5,12 @@ from log_setup import get_logger
 logger = get_logger(__name__)
 
 
+# Stores notes to disk, encrypting content via CryptoManager
 class NotesStore:
-    """
-    Verwaltet das Speichern, Laden und (optional) Verschlüsseln von Notizen.
-    Entfernt die unnötige NoteEncryptor-Klasse und nutzt direkt CryptoManager.
-    """
     def __init__(self, filename: str = "notes.json"):
         self.filename = filename
         self.crypto = CryptoManager()
-        # falls dein CryptoManager eine Schlüssel-Erzeugung hat:
+        # Only some CryptoManager versions have this
         if hasattr(self.crypto, "ensure_key"):
             try:
                 self.crypto.ensure_key()
@@ -25,7 +22,6 @@ class NotesStore:
         self._load()
 
     def _load(self):
-        """Lädt die Notizen aus der Datei, falls vorhanden."""
         if os.path.exists(self.filename):
             with open(self.filename, "r", encoding="utf-8") as f:
                 try:
@@ -38,7 +34,6 @@ class NotesStore:
             self._save()
 
     def _save(self):
-        """Speichert die Notizen in die Datei."""
         with open(self.filename, "w", encoding="utf-8") as f:
             json.dump(self.notes, f, indent=2, ensure_ascii=False)
 
@@ -54,18 +49,12 @@ class NotesStore:
             return ""
 
     def enumerate_owner(self, owner: str):
-        """
-        Gibt (global_index, entschlüsselte Notiz) für alle Notizen des Besitzers zurück.
-        """
         for idx, item in enumerate(self.notes):
             if item.get("owner") == owner:
                 dec = self._decrypt(item.get("content", ""))
                 yield idx, {"content": dec, "timestamp": item.get("timestamp", ""), "owner": owner}
 
     def list_decrypted(self, owner: str = None):
-        """
-        Gibt alle entschlüsselten Notizen zurück, optional gefiltert nach Besitzer.
-        """
         if owner is None:
             out = []
             for item in self.notes:
@@ -79,7 +68,6 @@ class NotesStore:
         return [dec for _, dec in self.enumerate_owner(owner)]
 
     def add(self, content: str, owner: str):
-        """Fügt eine neue Notiz hinzu und speichert sie."""
         enc = self._encrypt(content)
         self.notes.append({
             "content": enc,
@@ -89,7 +77,6 @@ class NotesStore:
         self._save()
 
     def update(self, global_index: int, content: str):
-        """Aktualisiert eine bestehende Notiz und speichert sie."""
         if 0 <= global_index < len(self.notes):
             enc = self._encrypt(content)
             self.notes[global_index]["content"] = enc
@@ -99,7 +86,6 @@ class NotesStore:
         return False
 
     def delete(self, global_index: int):
-        """Löscht eine Notiz anhand des Index und speichert die Änderung."""
         if 0 <= global_index < len(self.notes):
             del self.notes[global_index]
             self._save()

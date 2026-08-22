@@ -50,8 +50,6 @@ _MODULES = [
 
 
 class _ModuleCard(ctk.CTkFrame):
-    """Single dashboard module card."""
-
     def __init__(self, master, data: dict, command, **kw):
         super().__init__(
             master,
